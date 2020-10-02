@@ -8,7 +8,7 @@ tests_dir="./tests"
 
 echo "[CLEAR]"
 echo "  rm $build -r"
-rm $build -r
+rm $build -rf
 
 echo "[BUILD]"
 echo "  mkdir $build"
