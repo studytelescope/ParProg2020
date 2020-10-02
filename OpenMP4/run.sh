@@ -21,6 +21,9 @@ if [ ! $? -eq 0 ]; then
   exit 1
 fi
 
+SUCCESS_TESTS=()
+FAIL_TESTS=()
+
 for test_dir in $tests_dir/*; do
   test=$(basename $test_dir)
   printf "\n[TEST $test]\n"
@@ -35,8 +38,8 @@ for test_dir in $tests_dir/*; do
   fi
   if cmp -s $build/$test.txt $test_dir/output.txt; then
     echo "[TEST $test] OK ($DIFF ms)"
+    RES="OK"
     if [ -n "$1" ]; then
-      RES="OK"
       for ((i=1; i < $1; i++)); do
         START=$(date +%s%N)
         $exe $test_dir/input.txt $build/${test}_$i.txt
@@ -45,11 +48,19 @@ for test_dir in $tests_dir/*; do
         if ! cmp -s $build/${test}_$i.txt $test_dir/output.txt; then
           RES="FAIL"
           echo "DIFF FAIL: vimdiff $build/${test}_$i.txt $test_dir/output.txt"
+          FAIL_TESTS+=($test)
         fi
       done
       echo "[TEST ${test}x$1] $RES ($DIFF ms)"
     fi
+    if [[ $RES=="OK" ]]; then
+      SUCCESS_TESTS+=($test)
+    fi
   else
     echo "[TEST $test] DIFF FAIL: vimdiff $build/$test.txt $test_dir/output.txt"
+    FAIL_TESTS+=($test)
   fi
 done
+echo "==========="
+echo "SUCCESSFUL: ${SUCCESS_TESTS[@]}"
+echo "FAIL: ${FAIL_TESTS[@]}"
