@@ -57,7 +57,7 @@ for test_dir in $tests_dir/*; do
       SUCCESS_TESTS+=($test)
     fi
   else
-    echo "[TEST $test] DIFF FAIL: vimdiff $build/$test.txt $test_dir/output.txt"
+    echo "[TEST $test] DIFF FAIL($DIFF ms): vimdiff $build/$test.txt $test_dir/output.txt"
     FAIL_TESTS+=($test)
   fi
 done
