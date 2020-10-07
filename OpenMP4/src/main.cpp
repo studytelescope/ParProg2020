@@ -40,7 +40,7 @@ int main(int argc, char** argv)
   double res = calc();
 
   // Write result
-  output << std::setprecision(15) << res;
+  output << std::setprecision(15) << res << std::endl;
   // Prepare to exit
   output.close();
   input.close();
