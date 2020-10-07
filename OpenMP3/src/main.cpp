@@ -2,6 +2,12 @@
 #include <iomanip>
 #include <fstream>
 #include <omp.h>
+#include <cmath>
+
+double func(double x)
+{
+  return sin(x);
+}
 
 double calc(double x0, double x1, double dx, uint32_t num_threads)
 {
@@ -43,7 +49,7 @@ int main(int argc, char** argv)
   double res = calc(x0, x1, dx, num_threads);
 
   // Write result
-  output << std::setprecision(15) << res << std::endl;
+  output << std::setprecision(13) << res << std::endl;
   // Prepare to exit
   output.close();
   input.close();
