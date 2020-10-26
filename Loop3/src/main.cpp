@@ -13,7 +13,7 @@ void calc(double* arr, uint32_t ySize, uint32_t xSize, int rank, int size)
     {
       for (uint32_t x = 0; x < xSize; x++)
       {
-        arr[y*xSize + x] = sin(0.00001*arr[(y - 4)*xSize + x]);
+        arr[y*xSize + x] = sin(arr[(y - 4)*xSize + x]);
       }
     }
   }
