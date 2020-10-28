@@ -9,9 +9,34 @@ double func(double x)
   return sin(x);
 }
 
+const int token_number = 100;
+
 double calc(double x0, double x1, double dx, uint32_t num_threads)
 {
-  return 0;
+  double sum    = 0;
+  double* token = new double[token_number];
+
+  int num_steps   = (x1 - x0) / dx;
+  int token_size  = num_steps / token_number;
+
+  #pragma omp parallel num_threads(num_threads)
+  {
+    #pragma omp for
+    for(int i = 1; i < token_size * token_number; ++i)
+    {
+      int token_idx = i / token_size;
+      token[token_idx] += (func(x0 + i * dx));
+    }
+  }
+
+  for(int i(token_size * token_number); i < num_steps; ++i) sum += (func(x0 + i * dx));
+  for(int i(0); i < token_number; ++i) sum += token[i];
+
+  sum *= dx;
+
+  delete token;
+
+  return sum;
 }
 
 int main(int argc, char** argv)
